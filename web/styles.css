@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Livvic&display=swap');
 
 :root {
-    --text-height: 2em;
+    --text-height: 1.75em;
 }
 
 html,
@@ -29,7 +29,7 @@ body {
 
 span {
     display: inline-block;
-    width: 80px;
+    /* width: 40px; */
     border-radius: 0.05em;
 }
 
@@ -44,17 +44,33 @@ span {
 
 .not-typed {
     position: relative;
-    background-color: black;
-    color: white;
+    /* background-color: black; */
+    /* color: white; */
+    text-decoration: overline;
     font-weight: lighter;
-    box-shadow: 0px 0px 2px 1px black;
-    z-index: 2;
+    /* box-shadow: 0px 0px 2px 1px black; */
+    /* z-index: 2; */
 }
 .not-typed ~ .not-typed {
     position: relative;
-    background-color: white;
-    color: black;
+    text-decoration: none;
+    /* background-color: white; */
+    /* color: black; */
     font-weight: lighter;
-    box-shadow: none;
-    z-index: 1;
+    /* box-shadow: none; */
+    /* z-index: 1; */
+}
+
+.incorrect {
+    text-decoration: overline;/*line-through;*/
+    /* background-color: lightcoral; */
+    color: lightcoral;
+    /* color: white; */
+    filter: blur(1px);
+    /* box-shadow: 0px 0px 4px 2px lightcoral; */
+    /* color: red; */
+}
+
+#progress {
+    position: absolute;
 }

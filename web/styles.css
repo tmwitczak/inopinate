@@ -27,7 +27,7 @@ body {
     text-align: center;
 }
 
-span {
+#text-to-type span {
     display: inline-block;
     /* width: 40px; */
     border-radius: 0.05em;
@@ -62,7 +62,7 @@ span {
 }
 
 .incorrect {
-    text-decoration: overline;/*line-through;*/
+    text-decoration: overline;/*line-through*/;
     /* background-color: lightcoral; */
     color: lightcoral;
     /* color: white; */
@@ -73,4 +73,12 @@ span {
 
 #progress {
     position: absolute;
+    width: 100%;
+    font-size: 0.25em;
+}
+#progress span {
+    width: 0%;
+    display: inline-block;
+    background-color: lightgrey;
+    transition: width 0.25s ease-out 0s;
 }

@@ -5,7 +5,8 @@ import 'dart:math';
 
 
 //////////////////////////////////////////////////////////////////////// Main //
-TextToType textToTypeObj = MostUsedEnglishWords();
+var typedLetters = 0;
+TextToType textToTypeObj = MostCommonTrigraphs();
 
 void main()
 {
@@ -17,6 +18,27 @@ void main()
 
 abstract class TextToType {
     String generateText();
+}
+class MostCommonTrigraphs extends TextToType
+{
+    int randomIntegerInRange(int min, int max)
+        => (min + Random().nextInt(max - min + 1));
+    
+    int repeat = 0;
+    String word;
+
+    @override
+    String generateText() {
+        List words = ["the", "and", "ing", "her", "hat", "his", "tha", "ere", "for", "ent", "ion", "ter", "was", "you", "ith", "ver", "all", "wit", "thi", "tio"];
+        if (repeat == 0) {
+          word = words[randomIntegerInRange(0, words.length - 1)];
+        }
+        repeat = repeat + 1;
+        if (repeat == 1) {
+          repeat = 0;
+        }
+        return word;
+    }
 }
 class LeftHand extends TextToType
 {
@@ -143,6 +165,7 @@ void handleWindowKeyDownEvent(Event event)
             querySelector('#text-to-type')
                 .children.elementAt(textTyped.length).className = "typed";
             textTyped += keyboardEvent.key;
+            typedLetters++;
         }
         else {
             querySelector('#text-to-type')
@@ -187,6 +210,13 @@ void handleWindowKeyDownEvent(Event event)
     //     }
     // }
 
+
+    // Progress bar
+    var maxTyped = 100;
+    if (typedLetters <= maxTyped) {
+      querySelector("#progress").children.elementAt(0).style.width =
+          (typedLetters / maxTyped * 100.0).toString() + "%";
+    }
 
 }
 

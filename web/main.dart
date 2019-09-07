@@ -6,7 +6,7 @@ import 'dart:math';
 
 //////////////////////////////////////////////////////////////////////// Main //
 var typedLetters = 0;
-TextToType textToTypeObj = MostCommonTrigraphs();
+TextToType textToTypeObj = MostUsedEnglishWords();
 
 void main()
 {
@@ -216,6 +216,11 @@ void handleWindowKeyDownEvent(Event event)
     if (typedLetters <= maxTyped) {
       querySelector("#progress").children.elementAt(0).style.width =
           (typedLetters / maxTyped * 100.0).toString() + "%";
+    }
+    else {
+      if (Uri.base.queryParameters.isNotEmpty) {
+        window.location.href = 'http://www.'+Uri.base.queryParameters['dest']+'.com';
+      }
     }
 
 }

@@ -25,6 +25,9 @@ body {
 
     height: var(--text-height);
     text-align: center;
+
+    word-break: normal;
+    max-width: 500px;
 }
 
 #text-to-type span {

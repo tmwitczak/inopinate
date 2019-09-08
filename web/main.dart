@@ -8,10 +8,35 @@ import 'dart:math';
 var typedLetters = 0;
 TextToType textToTypeObj = MostCommonBigraphs();
 
+void handleClick(Event event) async {
+  textToTypeObj = MostUsedEnglishWords();
+  constructTextToTypeElement(await textToTypeObj.generateText());
+}
+
+void handleClick2(Event event) async {
+  textToTypeObj = RandomTextToType();
+  constructTextToTypeElement(await textToTypeObj.generateText());
+}
+
+void constructButtons() async {
+  Element testButton = DivElement();
+  testButton.className = "button";
+  testButton.text = "Most Used";
+  testButton.onClick.listen(handleClick);
+  querySelector('#modes').children.add(testButton);
+
+  Element testButton2 = DivElement();
+  testButton2.className = "button";
+  testButton2.text = "Random";
+  testButton2.onClick.listen(handleClick2);
+  querySelector('#modes').children.add(testButton2);
+}
+
 void main() async {
   await textToTypeObj.initialize();
   constructTextToTypeElement(await textToTypeObj.generateText());
 
+  await constructButtons();
   window.onKeyDown.listen(handleWindowKeyDownEvent);
 }
 

@@ -1,4 +1,5 @@
 ///////////////////////////////////////////////////////////////////// Imports //
+import 'dart:convert';
 import 'dart:core';
 import 'dart:html';
 import 'dart:math';
@@ -6,18 +7,56 @@ import 'dart:math';
 
 //////////////////////////////////////////////////////////////////////// Main //
 var typedLetters = 0;
-TextToType textToTypeObj = MostUsedEnglishWords();
+TextToType textToTypeObj = MostCommonBigraphs();
 
-void main()
+void main() async
 {
+    await textToTypeObj.initialize();
     constructTextToTypeElement(
-        textToTypeObj.generateText());
+        await textToTypeObj.generateText());
 
     window.onKeyDown.listen(handleWindowKeyDownEvent);
 }
 
 abstract class TextToType {
-    String generateText();
+    Future<void> initialize() {}
+    Future<String> generateText();
+}
+class MostCommonBigraphs extends TextToType
+{
+    List<String> words;
+
+    @override
+    Future<void> initialize() async
+    {
+        words = await loadData();
+    }
+
+    Future<List<String>> loadData() async
+    {
+        String jsonString = await HttpRequest.getString('packs/bigraphs.json');
+        var siema = json.decode(jsonString) as List;
+        return siema.cast<String>();
+    }
+
+    int randomIntegerInRange(int min, int max)
+        => (min + Random().nextInt(max - min + 1));
+    
+    int repeat = 0;
+    String word;
+
+    @override
+    Future<String> generateText() async
+    {
+        if (repeat == 0) {
+          word = words[randomIntegerInRange(0, words.length - 1)];
+        }
+        repeat = repeat + 1;
+        if (repeat == 1) {
+          repeat = 0;
+        }
+        return word;
+    }
 }
 class MostCommonTrigraphs extends TextToType
 {
@@ -28,7 +67,7 @@ class MostCommonTrigraphs extends TextToType
     String word;
 
     @override
-    String generateText() {
+    Future<String> generateText() async {
         List words = ["the", "and", "ing", "her", "hat", "his", "tha", "ere", "for", "ent", "ion", "ter", "was", "you", "ith", "ver", "all", "wit", "thi", "tio"];
         if (repeat == 0) {
           word = words[randomIntegerInRange(0, words.length - 1)];
@@ -46,7 +85,7 @@ class LeftHand extends TextToType
         => (min + Random().nextInt(max - min + 1));
 
     @override
-    String generateText() {
+    Future<String> generateText() async {
         String letters = "12345qwertasdfgzxcvb";
         String word = '';
         for (int i = 0; i < 10; i++) {
@@ -62,7 +101,7 @@ class MostUsedEnglishWords extends TextToType
         => (min + Random().nextInt(max - min + 1));
 
     @override
-    String generateText() {
+    Future<String> generateText() async {
         List words = ["as", "I", "his", "that", "he", "was", "for", "on", "are", "with", "they", "be", "at", "one", "have", "this", "from", "by", "hot", "word", "but", "what", "some", "is", "it", "you", "or", "had", "the", "of", "to", "and", "a", "in", "we", "can", "out", "other", "were", "which", "do", "their", "time", "if", "will", "how", "said", "an", "each", "tell", "does", "set", "three", "want", "air", "well", "also", "play", "small", "end", "put", "home", "read", "hand", "port", "large", "spell", "add", "even", "land", "here", "must", "big", "high", "such", "follow", "act", "why", "ask", "men", "change", "went", "light", "kind", "off", "need", "house", "picture", "try", "us", "again", "animal", "point", "mother", "world", "near", "build", "self", "earth", "father"];
         String word = '';
         for (int i = 0; i < 5; i++) {
@@ -94,7 +133,7 @@ class RandomTextToType extends TextToType
     }
 
     @override
-    String generateText() {
+    Future<String> generateText() async {
         return generateRandomText(
                     randomIntegerInRange(minimumRandomTextToTypeLength,
                                          maximumRandomTextToTypeLength));
@@ -133,7 +172,7 @@ void constructTextToTypeElement(String text)
 }
 
 
-void handleWindowKeyDownEvent(Event event)
+void handleWindowKeyDownEvent(Event event) async
 {
     if (!(event is KeyboardEvent)) {
         return;
@@ -185,7 +224,7 @@ void handleWindowKeyDownEvent(Event event)
     // Is text already typed
     if (textToType == textTyped) {
         constructTextToTypeElement(
-            textToTypeObj.generateText());
+            await textToTypeObj.generateText());
         textTyped = '';
     }
 

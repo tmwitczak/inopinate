@@ -18,18 +18,72 @@ void handleClick2(Event event) async {
   constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
-void constructButtons() async {
-  Element testButton = DivElement();
-  testButton.className = "button";
-  testButton.text = "Most Used";
-  testButton.onClick.listen(handleClick);
-  querySelector('#modes').children.add(testButton);
+void handleClick3(Event event) async {
+  textToTypeObj = LeftHand();
+  constructTextToTypeElement(await textToTypeObj.generateText());
+}
 
-  Element testButton2 = DivElement();
-  testButton2.className = "button";
-  testButton2.text = "Random";
-  testButton2.onClick.listen(handleClick2);
-  querySelector('#modes').children.add(testButton2);
+void handleClick4(Event event) async {
+  textToTypeObj = MostCommonTrigraphs();
+  constructTextToTypeElement(await textToTypeObj.generateText());
+}
+
+void handleClick5(Event event) async {
+  textToTypeObj = MostCommonBigraphs();
+  constructTextToTypeElement(await textToTypeObj.generateText());
+}
+
+void constructButtons() async {
+  var buttonInfo = [
+    ['1000 most used english words', handleClick],
+    ['Random words', handleClick2],
+    ['Left hand', handleClick3],
+    ['Most common trigraphs', handleClick4],
+    ['Most common bigraphgs', handleClick5]
+  ];
+
+  for (int i = 0; i < buttonInfo.length; i++) {
+    querySelector('#modes').children.add(DivElement()
+      ..className = "button"
+      ..text = buttonInfo[i][0]
+      ..onClick.listen(buttonInfo[i][1]));
+  }
+}
+
+void doTheCoolButtonEffect(MouseEvent event) {
+  var buttons = querySelectorAll('.button');
+
+  for (int i = 0; i < buttons.length; i++) {
+    double opacity = 0.0;
+
+    var buttonCenterX =
+        buttons[i].borderEdge.left + buttons[i].borderEdge.width / 2;
+    var buttonCenterY =
+        buttons[i].borderEdge.top + buttons[i].borderEdge.height / 2;
+    var mouseX = event.client.x;
+    var mouseY = event.client.y;
+    var distance =
+        sqrt(pow(buttonCenterX - mouseX, 2) + pow(buttonCenterY - mouseY, 2));
+
+    //TODO: make this function not linear
+    var maxDist = min(window.outerWidth, window.innerHeight) * 0.8;
+    if (distance > maxDist) {
+      opacity = 0.0;
+    } else if (distance <= maxDist && distance > 50) {
+      opacity = 1.0 - distance / maxDist;
+    } else {
+      opacity = 1.0;
+    }
+
+    if (mouseX >= buttons[i].borderEdge.left &&
+        mouseX <= buttons[i].borderEdge.right &&
+        mouseY >= buttons[i].borderEdge.top &&
+        mouseY <= buttons[i].borderEdge.bottom) {
+      buttons[i].style.opacity = (1).toString();
+    } else {
+      buttons[i].style.opacity = (0.75 * opacity + 0.0).toString();
+    }
+  }
 }
 
 void main() async {
@@ -38,10 +92,11 @@ void main() async {
 
   await constructButtons();
   window.onKeyDown.listen(handleWindowKeyDownEvent);
+  window.onMouseMove.listen(doTheCoolButtonEffect);
 }
 
 abstract class TextToType {
-  Future<void> initialize() {}
+  void initialize() {}
   Future<String> generateText();
 }
 
@@ -49,7 +104,7 @@ class MostCommonBigraphs extends TextToType {
   List<String> words;
 
   @override
-  Future<void> initialize() async {
+  void initialize() async {
     words = await loadData();
   }
 

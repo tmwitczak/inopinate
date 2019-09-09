@@ -1,106 +1,162 @@
 /* ////////////////////////////////////////////////////////////////// Imports */
 @import url("https://fonts.googleapis.com/css?family=Livvic&display=swap");
 
+/* //////////////////////////////////////////////////////////////// Variables */
 :root {
-  --text-height: 1.75em;
+    --text-height-typing: 1.6em;
+    --text-height-button: calc(var(--text-height-typing) / 5);
+
+    --color-1: hsl(0, 0%, 10%);
+    --color-2: hsl(0, 0%, 95%);
+    --color-3: hsl(0, 0%, 85%);
+    --color-4: hsl(0, 0%, 92.5%);
 }
 
 html,
 body {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: "Livvic", sans-serif;
-  font-size: var(--text-height);
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-2);
 
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-family: "Livvic", sans-serif;
+    font-size: var(--text-height-typing);
+
+    box-shadow: inset 0 0 2em 0 var(--color-4);
 }
 
 #text-to-type {
-  margin: auto;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 
-  height: var(--text-height);
-  text-align: center;
+    height: var(--text-height-typing);
+    text-align: center;
 
-  word-break: normal;
-  max-width: 500px;
+    word-break: normal;
+    max-width: 800px;
+
+    cursor: default;
 }
 
 #text-to-type span {
-  display: inline-block;
-  /* width: 40px; */
-  border-radius: 0.05em;
-  margin-left: 2.5px;
-  margin-right: 2.5px;
+    display: inline-block;
+    /* width: 40px; */
+    border-radius: 0.05em;
+    /* margin-left: 2.5px;
+    margin-right: 2.5px; */
 }
 
 .typed {
-  color: lightgrey;
-  font-weight: normal;
-  filter: blur(1px);
+    color: var(--color-3);
+    font-weight: normal;
+    filter: blur(0.9px);
 }
 .not-typed {
-  font-weight: lighter;
+    font-weight: lighter;
+    color: var(--color-1);
 }
 
 .not-typed {
-  position: relative;
-  /* background-color: black; */
-  /* color: white; */
-  text-decoration: overline;
-  font-weight: lighter;
-  /* box-shadow: 0px 0px 2px 1px black; */
-  /* z-index: 2; */
+    position: relative;
+    /* background-color: black; */
+    /* color: white; */
+    text-decoration: overline;
+    font-weight: lighter;
+    /* box-shadow: 0px 0px 2px 1px black; */
+    /* z-index: 2; */
 }
 .not-typed ~ .not-typed {
-  position: relative;
-  text-decoration: none;
-  /* background-color: white; */
-  /* color: black; */
-  font-weight: lighter;
-  /* box-shadow: none; */
-  /* z-index: 1; */
+    position: relative;
+    text-decoration: none;
+    /* background-color: white; */
+    /* color: black; */
+    font-weight: lighter;
+    /* box-shadow: none; */
+    /* z-index: 1; */
 }
 
 .incorrect {
-  text-decoration: /*line-through;*/ overline;
-  /* background-color: lightcoral; */
-  color: lightcoral;
-  /* color: white; */
-  filter: blur(1px);
-  /* box-shadow: 0px 0px 4px 2px lightcoral; */
-  /* color: red; */
+    text-decoration: /*line-through;*/ overline;
+    /* background-color: lightcoral; */
+    color: lightcoral;
+    /* color: white; */
+    filter: blur(0.9px);
+    /* box-shadow: 0px 0px 4px 2px lightcoral; */
+    /* color: red; */
 }
 
 #progress {
-  position: absolute;
-  width: 100%;
-  font-size: 0.25em;
+    position: relative;
+    width: 100%;
+    font-size: 0.1em;
+    /* margin-bottom: 1%; */
 }
 #progress span {
-  width: 0%;
-  display: inline-block;
-  background-color: lightgrey;
-  transition: width 0.25s ease-out 0s;
+    width: 0%;
+    display: inline-block;
+    background-color: var(--color-3);
+    transition: width 0.25s ease-out 0s;
 }
 
 .button {
-  background-color: black;
-  color: white;
-  font-size: 0.5em;
-  text-transform: uppercase;
-  display: inline-block;
-  border-radius: 4px;
-  text-align: center;
-  margin-left: 50px;
-  margin-right: 50px;
-  padding: 10px;
+    position: relative;
+    /* margin: auto; */
+    /* max-height: calc(var(--text-height-button) + var(--text-height-button) * 3); */
+    background-color: var(--color-3);
+    color: var(--color-1);
+    font-weight: bolder;
+    font-size: var(--text-height-button);
+    text-transform: uppercase;
+    display: inline-block;
+    border-radius: 4px;
+    text-align: center;
+    margin-left: calc(var(--text-height-button) * 2);
+    margin-right: calc(var(--text-height-button) * 2);
+    padding: calc(var(--text-height-button) * 2);
+
+    /* opacity: 0.5; */
+    transition: opacity 0.125s;
+
+    user-select: none;
+
+    text-decoration: none;
+    border: none;
+    outline: none;
 }
+.button:hover {
+    cursor: pointer;
+    /* opacity: 1; */
+}
+
+/* #modes::after {
+    content: '';
+    width: 100%;
+    display: inline-block;
+    font-size: 0;
+    line-height: 0;
+} */
+
+#modes {
+    position: relative;
+    width: 100%;
+    /* height: 20%; */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    text-align: justify;
+    text-justify: distribute-all-lines;
+    margin-top: calc(var(--text-height-button) * 1);
+
+    /* opacity: 0;
+    transition: opacity 0.25s; */
+}
+/* #modes:hover {
+    opacity: 1;
+} */

@@ -10,26 +10,31 @@ TextToType textToTypeObj = MostCommonBigraphs();
 
 void handleClick(Event event) async {
   textToTypeObj = MostUsedEnglishWords();
+  await textToTypeObj.initialize();
   constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
 void handleClick2(Event event) async {
   textToTypeObj = RandomTextToType();
+  await textToTypeObj.initialize();
   constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
 void handleClick3(Event event) async {
   textToTypeObj = LeftHand();
+  await textToTypeObj.initialize();
   constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
 void handleClick4(Event event) async {
   textToTypeObj = MostCommonTrigraphs();
+  await textToTypeObj.initialize();
   constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
 void handleClick5(Event event) async {
   textToTypeObj = MostCommonBigraphs();
+  await textToTypeObj.initialize();
   constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
@@ -192,119 +197,32 @@ class LeftHand extends TextToType {
 }
 
 class MostUsedEnglishWords extends TextToType {
-  int randomIntegerInRange(int min, int max) =>
-      (min + Random().nextInt(max - min + 1));
+  List<List<dynamic>> words;
+
+  @override
+  void initialize() async {
+    words = await loadData();
+  }
+
+  Future<List<List<dynamic>>> loadData() async {
+    String jsonString = await HttpRequest.getString('packs/woooords.json');
+    var siema = json.decode(jsonString) as List;
+    return siema.cast<List<dynamic>>();
+  }
 
   @override
   Future<String> generateText() async {
-    List words = [
-      "as",
-      "I",
-      "his",
-      "that",
-      "he",
-      "was",
-      "for",
-      "on",
-      "are",
-      "with",
-      "they",
-      "be",
-      "at",
-      "one",
-      "have",
-      "this",
-      "from",
-      "by",
-      "hot",
-      "word",
-      "but",
-      "what",
-      "some",
-      "is",
-      "it",
-      "you",
-      "or",
-      "had",
-      "the",
-      "of",
-      "to",
-      "and",
-      "a",
-      "in",
-      "we",
-      "can",
-      "out",
-      "other",
-      "were",
-      "which",
-      "do",
-      "their",
-      "time",
-      "if",
-      "will",
-      "how",
-      "said",
-      "an",
-      "each",
-      "tell",
-      "does",
-      "set",
-      "three",
-      "want",
-      "air",
-      "well",
-      "also",
-      "play",
-      "small",
-      "end",
-      "put",
-      "home",
-      "read",
-      "hand",
-      "port",
-      "large",
-      "spell",
-      "add",
-      "even",
-      "land",
-      "here",
-      "must",
-      "big",
-      "high",
-      "such",
-      "follow",
-      "act",
-      "why",
-      "ask",
-      "men",
-      "change",
-      "went",
-      "light",
-      "kind",
-      "off",
-      "need",
-      "house",
-      "picture",
-      "try",
-      "us",
-      "again",
-      "animal",
-      "point",
-      "mother",
-      "world",
-      "near",
-      "build",
-      "self",
-      "earth",
-      "father"
-    ];
-    String word = '';
-    for (int i = 0; i < 5; i++) {
-      word += words[randomIntegerInRange(0, words.length - 1)];
-      word += ' ';
+    double rando = Random().nextDouble();
+    double sum = 0.0;
+    for (int i = 0; i < words.length; i++) {
+      if (rando >= sum && rando < sum + words[i][1]) {
+        print(i + 1);
+        return words[i][0];
+      }
+      sum += words[i][1];
     }
-    return word;
+    assert(sum >= 1.0);
+    return words[0][0];
   }
 }
 
@@ -439,7 +357,7 @@ void handleWindowKeyDownEvent(Event event) async {
   // }
 
   // Progress bar
-  var maxTyped = 100;
+  var maxTyped = 1000;
   if (typedLetters <= maxTyped) {
     querySelector("#progress").children.elementAt(0).style.width =
         (typedLetters / maxTyped * 100.0).toString() + "%";

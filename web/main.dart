@@ -8,6 +8,12 @@ import 'dart:math';
 var typedLetters = 0;
 TextToType textToTypeObj = MostUsedEnglishWords();
 
+void handleClickDefault(Event event) async {
+  textToTypeObj = DefaultText();
+  await textToTypeObj.initialize();
+  constructTextToTypeElement(await textToTypeObj.generateText());
+}
+
 void handleClick(Event event) async {
   textToTypeObj = MostUsedEnglishWords();
   await textToTypeObj.initialize();
@@ -40,14 +46,30 @@ void handleClick5(Event event) async {
 
 void constructButtons() async {
   var buttonInfo = [
-    ['100 most used english words', handleClick],
+    ['English words', handleClick],
+    ['*Polish words*', handleClickDefault], //!!!
     ['Random words', handleClick2],
     ['Left hand', handleClick3],
-    ['Most common trigraphs', handleClick4],
-    ['Most common bigraphgs', handleClick5]
+    ['*Right hand*', handleClickDefault], //!!!
+    ['*Lower-case*', handleClickDefault], //!!!
+    ['*Upper-case*', handleClickDefault], //!!!
+    ['*Digits*', handleClickDefault], //!!!
+    ['*Symbols*', handleClickDefault], //!!!
+    ['*1-grams*', handleClickDefault], //!!!
+    ['2-grams', handleClick5],
+    ['3-grams', handleClick4],
+    ['*4-grams*', handleClickDefault], //!!!
+    ['*5-grams*', handleClickDefault], //!!!
+    ['*6-grams*', handleClickDefault], //!!!
+    ['*7-grams*', handleClickDefault], //!!!
+    ['*8-grams*', handleClickDefault], //!!!
+    ['*9-grams*', handleClickDefault] //!!!
   ];
 
   for (int i = 0; i < buttonInfo.length; i++) {
+    if (i != 0 && i % 9 == 0) {
+      querySelector('#typing-mode-buttons').children.add(BRElement());
+    }
     querySelector('#typing-mode-buttons').children.add(DivElement()
       ..className = "button"
       ..text = buttonInfo[i][0]
@@ -103,6 +125,13 @@ void main() async {
 abstract class TextToType {
   void initialize() {}
   Future<String> generateText();
+}
+
+class DefaultText extends TextToType {
+  @override
+  Future<String> generateText() async {
+    return ' ';
+  }
 }
 
 class MostCommonBigraphs extends TextToType {

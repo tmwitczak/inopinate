@@ -148,9 +148,9 @@ body {
     /* height: 20%; */
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    text-align: justify;
+    /* display: flex; */
+    /* justify-content: center; */
+    text-align: center;
     text-justify: distribute-all-lines;
     margin-top: calc(var(--text-height-button) * 1);
 

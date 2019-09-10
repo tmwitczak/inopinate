@@ -6,7 +6,7 @@ import 'dart:math';
 
 //////////////////////////////////////////////////////////////////////// Main //
 var typedLetters = 0;
-TextToType textToTypeObj = MostCommonBigraphs();
+TextToType textToTypeObj = MostUsedEnglishWords();
 
 void handleClick(Event event) async {
   textToTypeObj = MostUsedEnglishWords();
@@ -40,7 +40,7 @@ void handleClick5(Event event) async {
 
 void constructButtons() async {
   var buttonInfo = [
-    ['1000 most used english words', handleClick],
+    ['100 most used english words', handleClick],
     ['Random words', handleClick2],
     ['Left hand', handleClick3],
     ['Most common trigraphs', handleClick4],
@@ -212,7 +212,12 @@ class MostUsedEnglishWords extends TextToType {
 
   @override
   Future<String> generateText() async {
-    double rando = Random().nextDouble();
+    double tempSumof10 = 0.0;
+    for (int i = 0; i < words.length / 10; i++) {
+      tempSumof10 += words[i][1];
+    }
+    double rando = Random().nextDouble() * tempSumof10;//100words
+
     double sum = 0.0;
     for (int i = 0; i < words.length; i++) {
       if (rando >= sum && rando < sum + words[i][1]) {

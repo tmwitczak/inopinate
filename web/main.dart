@@ -48,7 +48,7 @@ void constructButtons() async {
   ];
 
   for (int i = 0; i < buttonInfo.length; i++) {
-    querySelector('#modes').children.add(DivElement()
+    querySelector('#typing-mode-buttons').children.add(DivElement()
       ..className = "button"
       ..text = buttonInfo[i][0]
       ..onClick.listen(buttonInfo[i][1]));
@@ -216,7 +216,7 @@ class MostUsedEnglishWords extends TextToType {
     for (int i = 0; i < words.length / 10; i++) {
       tempSumof10 += words[i][1];
     }
-    double rando = Random().nextDouble() * tempSumof10;//100words
+    double rando = Random().nextDouble() * tempSumof10; //100words
 
     double sum = 0.0;
     for (int i = 0; i < words.length; i++) {
@@ -364,8 +364,11 @@ void handleWindowKeyDownEvent(Event event) async {
   // Progress bar
   var maxTyped = 1000;
   if (typedLetters <= maxTyped) {
-    querySelector("#progress").children.elementAt(0).style.width =
-        (typedLetters / maxTyped * 100.0).toString() + "%";
+    querySelector("#typed-characters-progress-bar")
+        .children
+        .elementAt(0)
+        .style
+        .width = (typedLetters / maxTyped * 100.0).toString() + "%";
   } else {
     if (Uri.base.queryParameters.isNotEmpty) {
       window.location.href =

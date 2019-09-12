@@ -6,7 +6,7 @@ import 'dart:math';
 
 //////////////////////////////////////////////////////////////////////// Main //
 void main() async {
-  await textToTypeObj.initialize();
+  await textToTypeObj.initialize('packs/woooords.json');
   constructTextToTypeElement(await textToTypeObj.generateText());
 
   await constructButtons();
@@ -16,42 +16,42 @@ void main() async {
 
 ///////////////////////////////////////////////////// TODO: Name this section //
 var typedLetters = 0;
-TextToType textToTypeObj = MostUsedEnglishWords();
+TextToType textToTypeObj = TextToType();
 
 void handleClickDefault(Event event) async {
-  textToTypeObj = DefaultText();
-  await textToTypeObj.initialize();
-  constructTextToTypeElement(await textToTypeObj.generateText());
+  // textToTypeObj = DefaultText();
+  // await textToTypeObj.initialize();
+  // constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
 void handleClick(Event event) async {
-  textToTypeObj = MostUsedEnglishWords();
-  await textToTypeObj.initialize();
+  textToTypeObj = TextToType();
+  await textToTypeObj.initialize('packs/woooords.json');
   constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
 void handleClick2(Event event) async {
-  textToTypeObj = RandomTextToType();
-  await textToTypeObj.initialize();
-  constructTextToTypeElement(await textToTypeObj.generateText());
+  // textToTypeObj = RandomTextToType();
+  // await textToTypeObj.initialize();
+  // constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
 void handleClick3(Event event) async {
-  textToTypeObj = LeftHand();
-  await textToTypeObj.initialize();
-  constructTextToTypeElement(await textToTypeObj.generateText());
+  // textToTypeObj = LeftHand();
+  // await textToTypeObj.initialize();
+  // constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
 void handleClick4(Event event) async {
-  textToTypeObj = MostCommonTrigraphs();
-  await textToTypeObj.initialize();
-  constructTextToTypeElement(await textToTypeObj.generateText());
+  // textToTypeObj = MostCommonTrigraphs();
+  // await textToTypeObj.initialize();
+  // constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
 void handleClick5(Event event) async {
-  textToTypeObj = MostCommonBigraphs();
-  await textToTypeObj.initialize();
-  constructTextToTypeElement(await textToTypeObj.generateText());
+  // textToTypeObj = MostCommonBigraphs();
+  // await textToTypeObj.initialize();
+  // constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
 void constructButtons() async {
@@ -61,16 +61,16 @@ void constructButtons() async {
   var buttonInfo = [
     ['English words', handleClick],
     ['*Polish words*', handleClickDefault], //!!!
-    ['Random words', handleClick2],
-    ['Left hand', handleClick3],
+    ['*Random words*', handleClickDefault],
+    ['*Left hand*', handleClickDefault],
     ['*Right hand*', handleClickDefault], //!!!
     ['*Lower-case*', handleClickDefault], //!!!
     ['*Upper-case*', handleClickDefault], //!!!
     ['*Digits*', handleClickDefault], //!!!
     ['*Symbols*', handleClickDefault], //!!!
     ['*1-grams*', handleClickDefault], //!!!
-    ['2-grams', handleClick5],
-    ['3-grams', handleClick4],
+    ['*2-grams*', handleClick5],
+    ['*3-grams*', handleClick4],
     ['*4-grams*', handleClickDefault], //!!!
     ['*5-grams*', handleClickDefault], //!!!
     ['*6-grams*', handleClickDefault], //!!!
@@ -160,154 +160,154 @@ class DefaultText extends TextToType {
   }
 }
 
-class MostCommonBigraphs extends TextToType {
-  List<String> words;
+// class MostCommonBigraphs extends TextToType {
+//   List<String> words;
 
-  @override
-  void initialize() async {
-    words = await loadData();
-  }
+//   @override
+//   void initialize() async {
+//     words = await loadData();
+//   }
 
-  Future<List<String>> loadData() async {
-    String jsonString = await HttpRequest.getString('packs/bigraphs.json');
-    var siema = json.decode(jsonString) as List;
-    return siema.cast<String>();
-  }
+//   Future<List<String>> loadData() async {
+//     String jsonString = await HttpRequest.getString('packs/bigraphs.json');
+//     var siema = json.decode(jsonString) as List;
+//     return siema.cast<String>();
+//   }
 
-  int randomIntegerInRange(int min, int max) =>
-      (min + Random().nextInt(max - min + 1));
+//   int randomIntegerInRange(int min, int max) =>
+//       (min + Random().nextInt(max - min + 1));
 
-  int repeat = 0;
-  String word;
+//   int repeat = 0;
+//   String word;
 
-  @override
-  Future<String> generateText() async {
-    if (repeat == 0) {
-      word = words[randomIntegerInRange(0, words.length - 1)];
-    }
-    repeat = repeat + 1;
-    if (repeat == 1) {
-      repeat = 0;
-    }
-    return word;
-  }
-}
+//   @override
+//   Future<String> generateText() async {
+//     if (repeat == 0) {
+//       word = words[randomIntegerInRange(0, words.length - 1)];
+//     }
+//     repeat = repeat + 1;
+//     if (repeat == 1) {
+//       repeat = 0;
+//     }
+//     return word;
+//   }
+// }
 
-class MostCommonTrigraphs extends TextToType {
-  int randomIntegerInRange(int min, int max) =>
-      (min + Random().nextInt(max - min + 1));
+// class MostCommonTrigraphs extends TextToType {
+//   int randomIntegerInRange(int min, int max) =>
+//       (min + Random().nextInt(max - min + 1));
 
-  int repeat = 0;
-  String word;
+//   int repeat = 0;
+//   String word;
 
-  @override
-  Future<String> generateText() async {
-    List words = [
-      "the",
-      "and",
-      "ing",
-      "her",
-      "hat",
-      "his",
-      "tha",
-      "ere",
-      "for",
-      "ent",
-      "ion",
-      "ter",
-      "was",
-      "you",
-      "ith",
-      "ver",
-      "all",
-      "wit",
-      "thi",
-      "tio"
-    ];
-    if (repeat == 0) {
-      word = words[randomIntegerInRange(0, words.length - 1)];
-    }
-    repeat = repeat + 1;
-    if (repeat == 1) {
-      repeat = 0;
-    }
-    return word;
-  }
-}
+//   @override
+//   Future<String> generateText() async {
+//     List words = [
+//       "the",
+//       "and",
+//       "ing",
+//       "her",
+//       "hat",
+//       "his",
+//       "tha",
+//       "ere",
+//       "for",
+//       "ent",
+//       "ion",
+//       "ter",
+//       "was",
+//       "you",
+//       "ith",
+//       "ver",
+//       "all",
+//       "wit",
+//       "thi",
+//       "tio"
+//     ];
+//     if (repeat == 0) {
+//       word = words[randomIntegerInRange(0, words.length - 1)];
+//     }
+//     repeat = repeat + 1;
+//     if (repeat == 1) {
+//       repeat = 0;
+//     }
+//     return word;
+//   }
+// }
 
-class LeftHand extends TextToType {
-  int randomIntegerInRange(int min, int max) =>
-      (min + Random().nextInt(max - min + 1));
+// class LeftHand extends TextToType {
+//   int randomIntegerInRange(int min, int max) =>
+//       (min + Random().nextInt(max - min + 1));
 
-  @override
-  Future<String> generateText() async {
-    String letters = "12345qwertasdfgzxcvb";
-    String word = '';
-    for (int i = 0; i < 10; i++) {
-      word += letters[randomIntegerInRange(0, letters.length - 1)];
-      word += ' ';
-    }
-    return word;
-  }
-}
+//   @override
+//   Future<String> generateText() async {
+//     String letters = "12345qwertasdfgzxcvb";
+//     String word = '';
+//     for (int i = 0; i < 10; i++) {
+//       word += letters[randomIntegerInRange(0, letters.length - 1)];
+//       word += ' ';
+//     }
+//     return word;
+//   }
+// }
 
-class MostUsedEnglishWords extends TextToType {
-  List<List<dynamic>> words;
+// class MostUsedEnglishWords extends TextToType {
+//   List<List<dynamic>> words;
 
-  @override
-  void initialize() async {
-    words = await loadData();
-  }
+//   @override
+//   void initialize() async {
+//     words = await loadData();
+//   }
 
-  Future<List<List<dynamic>>> loadData() async {
-    String jsonString = await HttpRequest.getString('packs/woooords.json');
-    var siema = json.decode(jsonString) as List;
-    return siema.cast<List<dynamic>>();
-  }
+//   Future<List<List<dynamic>>> loadData() async {
+//     String jsonString = await HttpRequest.getString('packs/woooords.json');
+//     var siema = json.decode(jsonString) as List;
+//     return siema.cast<List<dynamic>>();
+//   }
 
-  @override
-  Future<String> generateText() async {
-    double tempSumof10 = 0.0;
-    for (int i = 0; i < words.length / 10; i++) {
-      tempSumof10 += words[i][1];
-    }
-    double rando = Random().nextDouble() * tempSumof10; //100words
+//   @override
+//   Future<String> generateText() async {
+//     double tempSumof10 = 0.0;
+//     for (int i = 0; i < words.length / 10; i++) {
+//       tempSumof10 += words[i][1];
+//     }
+//     double rando = Random().nextDouble() * tempSumof10; //100words
 
-    double sum = 0.0;
-    for (int i = 0; i < words.length; i++) {
-      if (rando >= sum && rando < sum + words[i][1]) {
-        print(i + 1);
-        return words[i][0];
-      }
-      sum += words[i][1];
-    }
-    assert(sum >= 1.0);
-    return words[0][0];
-  }
-}
+//     double sum = 0.0;
+//     for (int i = 0; i < words.length; i++) {
+//       if (rando >= sum && rando < sum + words[i][1]) {
+//         print(i + 1);
+//         return words[i][0];
+//       }
+//       sum += words[i][1];
+//     }
+//     assert(sum >= 1.0);
+//     return words[0][0];
+//   }
+// }
 
-class RandomTextToType extends TextToType {
-  String textToType;
+// class RandomTextToType extends TextToType {
+//   String textToType;
 
-  int randomIntegerInRange(int min, int max) =>
-      (min + Random().nextInt(max - min + 1));
+//   int randomIntegerInRange(int min, int max) =>
+//       (min + Random().nextInt(max - min + 1));
 
-  String generateRandomText(int length) {
-    String randomWord = '';
+//   String generateRandomText(int length) {
+//     String randomWord = '';
 
-    for (int i = 0; i < length; i++) {
-      randomWord += String.fromCharCode(
-          randomIntegerInRange(rangeMin.codeUnitAt(0), rangeMax.codeUnitAt(0)));
-    }
-    return randomWord;
-  }
+//     for (int i = 0; i < length; i++) {
+//       randomWord += String.fromCharCode(
+//           randomIntegerInRange(rangeMin.codeUnitAt(0), rangeMax.codeUnitAt(0)));
+//     }
+//     return randomWord;
+//   }
 
-  @override
-  Future<String> generateText() async {
-    return generateRandomText(randomIntegerInRange(
-        minimumRandomTextToTypeLength, maximumRandomTextToTypeLength));
-  }
-}
+//   @override
+//   Future<String> generateText() async {
+//     return generateRandomText(randomIntegerInRange(
+//         minimumRandomTextToTypeLength, maximumRandomTextToTypeLength));
+//   }
+// }
 
 var minimumRandomTextToTypeLength = 4;
 var maximumRandomTextToTypeLength = 6;

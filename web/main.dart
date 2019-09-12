@@ -24,6 +24,11 @@ void handleClickDefault(Event event) async {
   // constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
+void handleClick9(Event event) async {
+  textToTypeObj = TextToType();
+  await textToTypeObj.initialize('packs/programming.json');
+  constructTextToTypeElement(await textToTypeObj.generateText());
+}
 void handleClick(Event event) async {
   textToTypeObj = TextToType();
   await textToTypeObj.initialize('packs/woooords.json');
@@ -60,6 +65,7 @@ void constructButtons() async {
 
   var buttonInfo = [
     ['English words', handleClick],
+    ['Programming', handleClick9],
     ['*Polish words*', handleClickDefault], //!!!
     ['*Random words*', handleClickDefault],
     ['*Left hand*', handleClickDefault],

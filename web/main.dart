@@ -5,6 +5,16 @@ import 'dart:html';
 import 'dart:math';
 
 //////////////////////////////////////////////////////////////////////// Main //
+void main() async {
+  await textToTypeObj.initialize();
+  constructTextToTypeElement(await textToTypeObj.generateText());
+
+  await constructButtons();
+  window.onKeyDown.listen(handleWindowKeyDownEvent);
+  window.onMouseMove.listen(doTheCoolButtonEffect);
+}
+
+///////////////////////////////////////////////////// TODO: Name this section //
 var typedLetters = 0;
 TextToType textToTypeObj = MostUsedEnglishWords();
 
@@ -45,6 +55,9 @@ void handleClick5(Event event) async {
 }
 
 void constructButtons() async {
+  var typingModeButtonsContainer = querySelector('#typing-mode-buttons')
+    ..children.clear();
+
   var buttonInfo = [
     ['English words', handleClick],
     ['*Polish words*', handleClickDefault], //!!!
@@ -68,9 +81,9 @@ void constructButtons() async {
 
   for (int i = 0; i < buttonInfo.length; i++) {
     if (i != 0 && i % 9 == 0) {
-      querySelector('#typing-mode-buttons').children.add(BRElement());
+      typingModeButtonsContainer.children.add(BRElement());
     }
-    querySelector('#typing-mode-buttons').children.add(DivElement()
+    typingModeButtonsContainer.children.add(DivElement()
       ..className = "button"
       ..text = buttonInfo[i][0]
       ..onClick.listen(buttonInfo[i][1]));
@@ -113,18 +126,31 @@ void doTheCoolButtonEffect(MouseEvent event) {
   }
 }
 
-void main() async {
-  await textToTypeObj.initialize();
-  constructTextToTypeElement(await textToTypeObj.generateText());
+class TextToType {
+  List<List<dynamic>> words;
 
-  await constructButtons();
-  window.onKeyDown.listen(handleWindowKeyDownEvent);
-  window.onMouseMove.listen(doTheCoolButtonEffect);
-}
+  void initialize(String filename) async {
+    words = await loadData(filename);
+  }
 
-abstract class TextToType {
-  void initialize() {}
-  Future<String> generateText();
+  Future<List<List<dynamic>>> loadData(String filename) async {
+    return (json.decode(await HttpRequest.getString(filename)) as List)
+        .cast<List<dynamic>>();
+  }
+
+  Future<String> generateText() async {
+    double randomDouble = Random().nextDouble();
+
+    double sum = 0.0;
+    for (int i = 0; i < words.length; i++) {
+      if (randomDouble >= sum && randomDouble < sum + words[i][1]) {
+        return words[i][0];
+      }
+      sum += words[i][1];
+    }
+    assert(sum >= 1.0);
+    return words[0][0];
+  }
 }
 
 class DefaultText extends TextToType {

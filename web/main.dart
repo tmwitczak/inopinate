@@ -1,4 +1,5 @@
 ////////////////////////////////////////////////////// Imports //
+import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:html';
@@ -13,6 +14,8 @@ void main() async {
   window.onKeyDown.listen(handleWindowKeyDownEvent);
   window.onMouseMove.listen(doTheCoolButtonEffect);
 }
+
+void handleButtonsFadeout() async {}
 
 ////////////////////////////////////// TODO: Name this section //
 var typedLetters = 0;
@@ -38,22 +41,22 @@ void constructButtons() async {
     [
       'English words',
       (Event event) =>
-          handleClick(event, 'pack/english-words.json')
+          handleClick(event, 'packs/english-words.json')
     ],
     [
       'Programming (digits + symbols)',
       (Event event) =>
-          handleClick(event, 'pack/programming.json')
+          handleClick(event, 'packs/programming.json')
     ],
     [
       'Digits',
       (Event event) =>
-          handleClick(event, 'pack/programming-digits.json')
+          handleClick(event, 'packs/programming-digits.json')
     ],
     [
       'Symbols',
       (Event event) =>
-          handleClick(event, 'pack/programming-symbols.json')
+          handleClick(event, 'packs/programming-symbols.json')
     ],
     // ['*Polish words*', handleClickDefault], //!!!
     // ['*Random words*', handleClickDefault],
@@ -83,42 +86,65 @@ void constructButtons() async {
   }
 }
 
+Timer timer = Timer(Duration(seconds: 1), () {});
+
 void doTheCoolButtonEffect(MouseEvent event) {
   var buttons = querySelectorAll('.button');
 
-  for (int i = 0; i < buttons.length; i++) {
-    double opacity = 0.0;
+  //-----------------------------------------
+  // move mouse history
+  var mouseX = event.client.x;
+  var mouseY = event.client.y;
 
-    var buttonCenterX = buttons[i].borderEdge.left +
-        buttons[i].borderEdge.width / 2;
-    var buttonCenterY = buttons[i].borderEdge.top +
-        buttons[i].borderEdge.height / 2;
-    var mouseX = event.client.x;
-    var mouseY = event.client.y;
-    var distance = sqrt(pow(buttonCenterX - mouseX, 2) +
-        pow(buttonCenterY - mouseY, 2));
-
-    //TODO: make this function not linear
-    var maxDist =
-        min(window.outerWidth, window.innerHeight) * 0.8;
-    if (distance > maxDist) {
-      opacity = 0.0;
-    } else if (distance <= maxDist && distance > 50) {
-      opacity = 1.0 - distance / maxDist;
-    } else {
-      opacity = 1.0;
-    }
-
-    if (mouseX >= buttons[i].borderEdge.left &&
-        mouseX <= buttons[i].borderEdge.right &&
-        mouseY >= buttons[i].borderEdge.top &&
-        mouseY <= buttons[i].borderEdge.bottom) {
-      buttons[i].style.opacity = (1).toString();
-    } else {
-      buttons[i].style.opacity =
-          (0.75 * opacity + 0.0).toString();
-    }
+  // change this number to something with closest button or div
+  if (mouseY > 250) {
+    timer.cancel();
+    timer = Timer(Duration(seconds: 1), () {
+      buttons.style.transition = 'opacity 10s ease-in-out 0s';
+      for (int i = 0; i < buttons.length; i++) {
+        buttons[i].style.opacity = '0.0';
+      }
+    });
   }
+
+  buttons.style.transition = 'opacity 0.25s';
+  for (int i = 0; i < buttons.length; i++) {
+    buttons[i].style.opacity = '1.0';
+  }
+
+  //-----------------------------------------
+
+  // for (int i = 0; i < buttons.length; i++) {
+  //   double opacity = 0.0;
+
+  //   var buttonCenterX = buttons[i].borderEdge.left +
+  //       buttons[i].borderEdge.width / 2;
+  //   var buttonCenterY = buttons[i].borderEdge.top +
+  //       buttons[i].borderEdge.height / 2;
+  //   var distance = sqrt(pow(buttonCenterX - mouseX, 2) +
+  //       pow(buttonCenterY - mouseY, 2));
+
+  //   //TODO: make this function not linear
+  //   var maxDist =
+  //       min(window.outerWidth, window.innerHeight) * 0.8;
+  //   if (distance > maxDist) {
+  //     opacity = 0.0;
+  //   } else if (distance <= maxDist && distance > 50) {
+  //     opacity = 1.0 - distance / maxDist;
+  //   } else {
+  //     opacity = 1.0;
+  //   }
+
+  //   if (mouseX >= buttons[i].borderEdge.left &&
+  //       mouseX <= buttons[i].borderEdge.right &&
+  //       mouseY >= buttons[i].borderEdge.top &&
+  //       mouseY <= buttons[i].borderEdge.bottom) {
+  //     buttons[i].style.opacity = (1).toString();
+  //   } else {
+  //     buttons[i].style.opacity =
+  //         (0.75 * opacity + 0.0).toString();
+  //   }
+  // }
 }
 
 class TextToType {

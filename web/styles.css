@@ -121,7 +121,7 @@ body {
     padding: calc(var(--text-height-button) * 2);
 
     opacity: 0;
-    transition: opacity 0.125s;
+    /* transition: opacity 0.125s; */
 
     user-select: none;
 

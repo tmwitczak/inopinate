@@ -436,7 +436,7 @@ void handleWindowKeyDownEvent(Event event) async {
   // }
 
   // Progress bar
-  var maxTyped = 1000;
+  var maxTyped = 100;
   if (typedLetters <= maxTyped) {
     querySelector("#typed-characters-progress-bar")
         .children

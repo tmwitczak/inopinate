@@ -24,63 +24,37 @@ void handleClickDefault(Event event) async {
   // constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
-void handleClickSymbols(Event event) async {
+void handleClick(Event event, String jsonFilename) async {
   textToTypeObj = TextToType();
-  await textToTypeObj.initialize('packs/programming-symbols.json');
+  await textToTypeObj.initialize(jsonFilename);
   constructTextToTypeElement(await textToTypeObj.generateText());
-}
-
-void handleClickDigits(Event event) async {
-  textToTypeObj = TextToType();
-  await textToTypeObj.initialize('packs/programming-digits.json');
-  constructTextToTypeElement(await textToTypeObj.generateText());
-}
-
-void handleClick9(Event event) async {
-  textToTypeObj = TextToType();
-  await textToTypeObj.initialize('packs/programming.json');
-  constructTextToTypeElement(await textToTypeObj.generateText());
-}
-
-void handleClick(Event event) async {
-  textToTypeObj = TextToType();
-  await textToTypeObj.initialize('packs/english-words.json');
-  constructTextToTypeElement(await textToTypeObj.generateText());
-}
-
-void handleClick2(Event event) async {
-  // textToTypeObj = RandomTextToType();
-  // await textToTypeObj.initialize();
-  // constructTextToTypeElement(await textToTypeObj.generateText());
-}
-
-void handleClick3(Event event) async {
-  // textToTypeObj = LeftHand();
-  // await textToTypeObj.initialize();
-  // constructTextToTypeElement(await textToTypeObj.generateText());
-}
-
-void handleClick4(Event event) async {
-  // textToTypeObj = MostCommonTrigraphs();
-  // await textToTypeObj.initialize();
-  // constructTextToTypeElement(await textToTypeObj.generateText());
-}
-
-void handleClick5(Event event) async {
-  // textToTypeObj = MostCommonBigraphs();
-  // await textToTypeObj.initialize();
-  // constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
 void constructButtons() async {
-  var typingModeButtonsContainer = querySelector('#typing-mode-buttons')
-    ..children.clear();
+  var typingModeButtonsContainer =
+      querySelector('#typing-mode-buttons')..children.clear();
 
   var buttonInfo = [
-    ['English words', handleClick],
-    ['Programming (digits + symbols)', handleClick9],
-    ['Digits', handleClickDigits],
-    ['Symbols', handleClickSymbols],
+    [
+      'English words',
+      (Event event) =>
+          handleClick(event, 'pack/english-words.json')
+    ],
+    [
+      'Programming (digits + symbols)',
+      (Event event) =>
+          handleClick(event, 'pack/programming.json')
+    ],
+    [
+      'Digits',
+      (Event event) =>
+          handleClick(event, 'pack/programming-digits.json')
+    ],
+    [
+      'Symbols',
+      (Event event) =>
+          handleClick(event, 'pack/programming-symbols.json')
+    ],
     // ['*Polish words*', handleClickDefault], //!!!
     // ['*Random words*', handleClickDefault],
     // ['*Left hand*', handleClickDefault],
@@ -115,17 +89,18 @@ void doTheCoolButtonEffect(MouseEvent event) {
   for (int i = 0; i < buttons.length; i++) {
     double opacity = 0.0;
 
-    var buttonCenterX =
-        buttons[i].borderEdge.left + buttons[i].borderEdge.width / 2;
-    var buttonCenterY =
-        buttons[i].borderEdge.top + buttons[i].borderEdge.height / 2;
+    var buttonCenterX = buttons[i].borderEdge.left +
+        buttons[i].borderEdge.width / 2;
+    var buttonCenterY = buttons[i].borderEdge.top +
+        buttons[i].borderEdge.height / 2;
     var mouseX = event.client.x;
     var mouseY = event.client.y;
-    var distance =
-        sqrt(pow(buttonCenterX - mouseX, 2) + pow(buttonCenterY - mouseY, 2));
+    var distance = sqrt(pow(buttonCenterX - mouseX, 2) +
+        pow(buttonCenterY - mouseY, 2));
 
     //TODO: make this function not linear
-    var maxDist = min(window.outerWidth, window.innerHeight) * 0.8;
+    var maxDist =
+        min(window.outerWidth, window.innerHeight) * 0.8;
     if (distance > maxDist) {
       opacity = 0.0;
     } else if (distance <= maxDist && distance > 50) {
@@ -140,7 +115,8 @@ void doTheCoolButtonEffect(MouseEvent event) {
         mouseY <= buttons[i].borderEdge.bottom) {
       buttons[i].style.opacity = (1).toString();
     } else {
-      buttons[i].style.opacity = (0.75 * opacity + 0.0).toString();
+      buttons[i].style.opacity =
+          (0.75 * opacity + 0.0).toString();
     }
   }
 }
@@ -153,7 +129,8 @@ class TextToType {
   }
 
   Future<List<List<dynamic>>> loadData(String filename) async {
-    return (json.decode(await HttpRequest.getString(filename)) as List)
+    return (json.decode(await HttpRequest.getString(filename))
+            as List)
         .cast<List<dynamic>>();
   }
 
@@ -162,7 +139,8 @@ class TextToType {
 
     double sum = 0.0;
     for (int i = 0; i < words.length; i++) {
-      if (randomDouble >= sum && randomDouble < sum + words[i][1]) {
+      if (randomDouble >= sum &&
+          randomDouble < sum + words[i][1]) {
         return words[i][0];
       }
       sum += words[i][1];
@@ -363,12 +341,15 @@ void handleWindowKeyDownEvent(Event event) async {
   }
 
   //--------------------------------------------------------------------------
-  bool isStringOneCharacter(String string) => (string.length == 1);
+  bool isStringOneCharacter(String string) =>
+      (string.length == 1);
 
   bool isPressedKeyAcceptable(KeyboardEvent keyboardEvent) =>
       isStringOneCharacter(keyboardEvent.key) &&
-      (keyboardEvent.key.codeUnitAt(0) >= rangeMin.codeUnitAt(0)) &&
-      (keyboardEvent.key.codeUnitAt(0) <= rangeMax.codeUnitAt(0));
+      (keyboardEvent.key.codeUnitAt(0) >=
+          rangeMin.codeUnitAt(0)) &&
+      (keyboardEvent.key.codeUnitAt(0) <=
+          rangeMax.codeUnitAt(0));
 
   //--------------------------------------------------------------------------
   KeyboardEvent keyboardEvent = event;
@@ -382,7 +363,8 @@ void handleWindowKeyDownEvent(Event event) async {
     textTyped = textTyped.substring(0, textTyped.length - 1);
   }
 
-  if (isPressedKeyAcceptable(keyboardEvent) || keyboardEvent.key == "Space") {
+  if (isPressedKeyAcceptable(keyboardEvent) ||
+      keyboardEvent.key == "Space") {
     // Is pressed key correct?
     if (textToType[textTyped.length] == keyboardEvent.key) {
       querySelector('#text-to-type')
@@ -410,7 +392,8 @@ void handleWindowKeyDownEvent(Event event) async {
 
   // Is text already typed
   if (textToType == textTyped) {
-    constructTextToTypeElement(await textToTypeObj.generateText());
+    constructTextToTypeElement(
+        await textToTypeObj.generateText());
     textTyped = '';
   }
 
@@ -439,14 +422,16 @@ void handleWindowKeyDownEvent(Event event) async {
   var maxTyped = 100;
   if (typedLetters <= maxTyped) {
     querySelector("#typed-characters-progress-bar")
-        .children
-        .elementAt(0)
-        .style
-        .width = (typedLetters / maxTyped * 100.0).toString() + "%";
+            .children
+            .elementAt(0)
+            .style
+            .width =
+        (typedLetters / maxTyped * 100.0).toString() + "%";
   } else {
     if (Uri.base.queryParameters.isNotEmpty) {
-      window.location.href =
-          'http://www.' + Uri.base.queryParameters['dest'] + '.com';
+      window.location.href = 'http://www.' +
+          Uri.base.queryParameters['dest'] +
+          '.com';
     }
   }
 }

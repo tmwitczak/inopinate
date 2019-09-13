@@ -1,12 +1,12 @@
-///////////////////////////////////////////////////////////////////// Imports //
+////////////////////////////////////////////////////// Imports //
 import 'dart:convert';
 import 'dart:core';
 import 'dart:html';
 import 'dart:math';
 
-//////////////////////////////////////////////////////////////////////// Main //
+///////////////////////////////////////////////////////// Main //
 void main() async {
-  await textToTypeObj.initialize('packs/woooords.json');
+  await textToTypeObj.initialize('packs/english-words.json');
   constructTextToTypeElement(await textToTypeObj.generateText());
 
   await constructButtons();
@@ -14,7 +14,7 @@ void main() async {
   window.onMouseMove.listen(doTheCoolButtonEffect);
 }
 
-///////////////////////////////////////////////////// TODO: Name this section //
+////////////////////////////////////// TODO: Name this section //
 var typedLetters = 0;
 TextToType textToTypeObj = TextToType();
 
@@ -24,14 +24,27 @@ void handleClickDefault(Event event) async {
   // constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
+void handleClickSymbols(Event event) async {
+  textToTypeObj = TextToType();
+  await textToTypeObj.initialize('packs/programming-symbols.json');
+  constructTextToTypeElement(await textToTypeObj.generateText());
+}
+
+void handleClickDigits(Event event) async {
+  textToTypeObj = TextToType();
+  await textToTypeObj.initialize('packs/programming-digits.json');
+  constructTextToTypeElement(await textToTypeObj.generateText());
+}
+
 void handleClick9(Event event) async {
   textToTypeObj = TextToType();
   await textToTypeObj.initialize('packs/programming.json');
   constructTextToTypeElement(await textToTypeObj.generateText());
 }
+
 void handleClick(Event event) async {
   textToTypeObj = TextToType();
-  await textToTypeObj.initialize('packs/woooords.json');
+  await textToTypeObj.initialize('packs/english-words.json');
   constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
@@ -65,24 +78,24 @@ void constructButtons() async {
 
   var buttonInfo = [
     ['English words', handleClick],
-    ['Programming', handleClick9],
-    ['*Polish words*', handleClickDefault], //!!!
-    ['*Random words*', handleClickDefault],
-    ['*Left hand*', handleClickDefault],
-    ['*Right hand*', handleClickDefault], //!!!
-    ['*Lower-case*', handleClickDefault], //!!!
-    ['*Upper-case*', handleClickDefault], //!!!
-    ['*Digits*', handleClickDefault], //!!!
-    ['*Symbols*', handleClickDefault], //!!!
-    ['*1-grams*', handleClickDefault], //!!!
-    ['*2-grams*', handleClick5],
-    ['*3-grams*', handleClick4],
-    ['*4-grams*', handleClickDefault], //!!!
-    ['*5-grams*', handleClickDefault], //!!!
-    ['*6-grams*', handleClickDefault], //!!!
-    ['*7-grams*', handleClickDefault], //!!!
-    ['*8-grams*', handleClickDefault], //!!!
-    ['*9-grams*', handleClickDefault] //!!!
+    ['Programming (digits + symbols)', handleClick9],
+    ['Digits', handleClickDigits],
+    ['Symbols', handleClickSymbols],
+    // ['*Polish words*', handleClickDefault], //!!!
+    // ['*Random words*', handleClickDefault],
+    // ['*Left hand*', handleClickDefault],
+    // ['*Right hand*', handleClickDefault], //!!!
+    // ['*Lower-case*', handleClickDefault], //!!!
+    // ['*Upper-case*', handleClickDefault], //!!!
+    // ['*1-grams*', handleClickDefault], //!!!
+    // ['*2-grams*', handleClick5],
+    // ['*3-grams*', handleClick4],
+    // ['*4-grams*', handleClickDefault], //!!!
+    // ['*5-grams*', handleClickDefault], //!!!
+    // ['*6-grams*', handleClickDefault], //!!!
+    // ['*7-grams*', handleClickDefault], //!!!
+    // ['*8-grams*', handleClickDefault], //!!!
+    // ['*9-grams*', handleClickDefault] //!!!
   ];
 
   for (int i = 0; i < buttonInfo.length; i++) {
@@ -266,7 +279,7 @@ class DefaultText extends TextToType {
 //   }
 
 //   Future<List<List<dynamic>>> loadData() async {
-//     String jsonString = await HttpRequest.getString('packs/woooords.json');
+//     String jsonString = await HttpRequest.getString('packs/english-words.json');
 //     var siema = json.decode(jsonString) as List;
 //     return siema.cast<List<dynamic>>();
 //   }
@@ -438,4 +451,4 @@ void handleWindowKeyDownEvent(Event event) async {
   }
 }
 
-////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////

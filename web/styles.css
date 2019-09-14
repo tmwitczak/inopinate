@@ -10,6 +10,7 @@
     --color-2: hsl(0, 0%, 95%);
     --color-3: hsl(0, 0%, 85%);
     --color-4: hsl(0, 0%, 92.5%);
+    --color-5: hsl(0, 0%, 55%);
 }
 
 html,
@@ -25,6 +26,8 @@ body {
     font-size: var(--text-height-typing);
 
     box-shadow: inset 0 0 2em 0 var(--color-4);
+
+    user-select: none;
 }
 
 #text-to-type {
@@ -42,6 +45,8 @@ body {
     max-width: 800px;
 
     cursor: default;
+
+    z-index: 1;
 }
 
 #text-to-type span {
@@ -120,7 +125,7 @@ body {
     margin-right: calc(var(--text-height-button) * 2);
     padding: calc(var(--text-height-button) * 2);
 
-    opacity: 1;
+    opacity: 0;
     /* transition: opacity 0.125s; */
 
     user-select: none;
@@ -160,3 +165,20 @@ body {
 /* #modes:hover {
     opacity: 1;
 } */
+
+.destination {
+    margin: auto;
+    position: absolute;
+    top: -50%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: var(--text-height-typing);
+    text-align: center;
+    font-size: calc(var(--text-height-typing) * 3);
+    color: var(--color-2);
+    text-shadow: 2.5px -5px 5px var(--color-3);
+    letter-spacing: calc(var(--text-height-typing) / 10);
+    z-index: 0;
+}

@@ -6,7 +6,21 @@ import 'dart:html';
 import 'dart:math';
 
 ///////////////////////////////////////////////////////// Main //
+var maxTyped = 50;
+
 void main() async {
+  if (Uri.base.queryParameters.isNotEmpty) {
+    if (Uri.base.queryParameters['dest'].isNotEmpty) {
+      querySelector('body').children.add(DivElement()
+        ..appendText(Uri.base.queryParameters['dest'])
+        ..className = 'destination');
+    }
+    if (Uri.base.queryParameters['characters'].isNotEmpty) {
+      maxTyped =
+          int.parse(Uri.base.queryParameters['characters']);
+    }
+  }
+
   await textToTypeObj.initialize('packs/english-words.json');
   constructTextToTypeElement(await textToTypeObj.generateText());
 
@@ -100,7 +114,7 @@ void doTheCoolButtonEffect(MouseEvent event) {
   if (mouseY > 250) {
     timer.cancel();
     timer = Timer(Duration(seconds: 1), () {
-      buttons.style.transition = 'opacity 10s ease-in-out 0s';
+      buttons.style.transition = 'opacity 2s ease-in-out 0s';
       for (int i = 0; i < buttons.length; i++) {
         buttons[i].style.opacity = '0.0';
       }
@@ -445,7 +459,6 @@ void handleWindowKeyDownEvent(Event event) async {
   // }
 
   // Progress bar
-  var maxTyped = 50;
   if (typedLetters <= maxTyped) {
     querySelector("#typed-characters-progress-bar")
             .children
@@ -453,12 +466,28 @@ void handleWindowKeyDownEvent(Event event) async {
             .style
             .width =
         (typedLetters / maxTyped * 100.0).toString() + "%";
-  } else {
-    if (Uri.base.queryParameters.isNotEmpty) {
-      window.location.href = 'http://www.' +
-          Uri.base.queryParameters['dest'] +
-          '.com';
-    }
+  }
+
+  if (typedLetters == maxTyped) {
+    querySelector('.destination')
+      ..style.color = 'var(--color-5)'
+      ..style.transition = 'color 1.5s ease-in 0s';
+
+    querySelector('#text-to-type')
+      ..style.opacity = '0.2'
+      ..style.transition = 'opacity 1.5s ease-out 0s';
+
+    querySelector('#typing-mode-buttons')
+      ..style.opacity = '0.2'
+      ..style.transition = 'opacity 1.5s ease-out 0s';
+
+    Timer(Duration(seconds: 2), () {
+      if (Uri.base.queryParameters.isNotEmpty) {
+        window.location.href = 'http://' +
+            Uri.base.queryParameters['dest'] +
+            '.com';
+      }
+    });
   }
 }
 

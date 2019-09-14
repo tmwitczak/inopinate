@@ -176,7 +176,7 @@ body {
 
     height: var(--text-height-typing);
     text-align: center;
-    font-size: calc(var(--text-height-typing) * 3);
+    font-size: calc(var(--text-height-typing) * 1.618);
     color: var(--color-2);
     text-shadow: 2.5px -5px 5px var(--color-3);
     letter-spacing: calc(var(--text-height-typing) / 10);

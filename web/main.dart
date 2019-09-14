@@ -10,12 +10,12 @@ var maxTyped = 50;
 
 void main() async {
   if (Uri.base.queryParameters.isNotEmpty) {
-    if (Uri.base.queryParameters['dest'].isNotEmpty) {
+    if (Uri.base.queryParameters.containsKey('dest')) {
       querySelector('body').children.add(DivElement()
         ..appendText(Uri.base.queryParameters['dest'])
         ..className = 'destination');
     }
-    if (Uri.base.queryParameters['characters'].isNotEmpty) {
+    if (Uri.base.queryParameters.containsKey('characters')) {
       maxTyped =
           int.parse(Uri.base.queryParameters['characters']);
     }
@@ -469,25 +469,27 @@ void handleWindowKeyDownEvent(Event event) async {
   }
 
   if (typedLetters == maxTyped) {
-    querySelector('.destination')
-      ..style.color = 'var(--color-5)'
-      ..style.transition = 'color 1.5s ease-in 0s';
+    if (Uri.base.queryParameters.containsKey('dest')) {
+      querySelector('.destination')
+        ..style.color = 'var(--color-5)'
+        ..style.transition = 'color 1.5s ease-in 0s';
 
-    querySelector('#text-to-type')
-      ..style.opacity = '0.2'
-      ..style.transition = 'opacity 1.5s ease-out 0s';
+      querySelector('#text-to-type')
+        ..style.opacity = '0.2'
+        ..style.transition = 'opacity 1.5s ease-out 0s';
 
-    querySelector('#typing-mode-buttons')
-      ..style.opacity = '0.2'
-      ..style.transition = 'opacity 1.5s ease-out 0s';
+      querySelector('#typing-mode-buttons')
+        ..style.opacity = '0.2'
+        ..style.transition = 'opacity 1.5s ease-out 0s';
 
-    Timer(Duration(seconds: 2), () {
-      if (Uri.base.queryParameters.isNotEmpty) {
-        window.location.href = 'http://' +
-            Uri.base.queryParameters['dest'] +
-            '.com';
-      }
-    });
+      Timer(Duration(seconds: 2), () {
+        if (Uri.base.queryParameters.containsKey('dest')) {
+          window.location.href = 'http://' +
+              Uri.base.queryParameters['dest'] +
+              '.com';
+        }
+      });
+    }
   }
 }
 

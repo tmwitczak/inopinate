@@ -1,3 +1,4 @@
+from decimal import Decimal
 import json
 import sys
 
@@ -8,16 +9,23 @@ if len(sys.argv) == 3:
     output_filename = sys.argv[2]
 
 with open(input_filename, "r") as input_file:
-    probabilities: [(str, float)] = json.load(input_file)
-
-    probability_sum: float = sum(
-        [probability for _, probability in probabilities]
+    probabilities: [(str, ...)] = json.load(input_file)
+    probability_sum: [Decimal] = [Decimal(0)] * (
+        len(probabilities[0]) - 1
     )
 
-    probabilities = [
-        (_, (probability / probability_sum))
-        for _, probability in probabilities
-    ]
+    for i in range(len(probabilities)):
+        for j in range(len(probability_sum)):
+            probability_sum[j] += Decimal(
+                probabilities[i][1 + j]
+            )
+
+    for i in range(len(probabilities)):
+        for j in range(len(probability_sum)):
+            probabilities[i][1 + j] = float(
+                Decimal(probabilities[i][1 + j])
+                / probability_sum[j]
+            )
 
     with open(output_filename, "w") as output_file:
         json.dump(probabilities, output_file)

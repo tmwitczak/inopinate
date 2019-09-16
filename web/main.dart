@@ -6,6 +6,8 @@ import 'dart:html';
 import 'dart:math';
 
 ///////////////////////////////////////////////////////// Main //
+var random = Random();
+
 var maxTyped = 50;
 
 void main() async {
@@ -41,6 +43,12 @@ void handleClickDefault(Event event) async {
   // constructTextToTypeElement(await textToTypeObj.generateText());
 }
 
+void handleClickRandom(Event event) async {
+  textToTypeObj = RandomWords();
+  await textToTypeObj.initialize('');
+  constructTextToTypeElement(await textToTypeObj.generateText());
+}
+
 void handleClick(Event event, String jsonFilename) async {
   textToTypeObj = TextToType();
   await textToTypeObj.initialize(jsonFilename);
@@ -52,6 +60,10 @@ void constructButtons() async {
       querySelector('#typing-mode-buttons')..children.clear();
 
   var buttonInfo = [
+    [
+      'Statistical random words (English)',
+      (Event event) => handleClickRandom(event)
+    ],
     [
       'English words',
       (Event event) =>
@@ -175,7 +187,7 @@ class TextToType {
   }
 
   Future<String> generateText() async {
-    double randomDouble = Random().nextDouble();
+    double randomDouble = random.nextDouble();
 
     double sum = 0.0;
     for (int i = 0; i < words.length; i++) {
@@ -187,6 +199,89 @@ class TextToType {
     }
     assert(sum >= 1.0);
     return words[0][0];
+  }
+}
+
+class RandomWords extends TextToType {
+  List<List<dynamic>> letters, lengths;
+
+  void initialize(String filename) async {
+    letters = await loadData('packs/letters.json');
+    lengths = await loadData('packs/word-length.json');
+  }
+
+  Future<List<List<dynamic>>> loadData(String filename) async {
+    return (json.decode(await HttpRequest.getString(filename))
+            as List)
+        .cast<List<dynamic>>();
+  }
+
+  int numberIndex(int letterIndex, int wordLength) {
+// 1-gram,
+// */*,1/*,2/*,3/*,4/*,5/*,6/*,7/*,8/*,9/*,
+// 1/1:1,
+// 2/1:1,2/2:2,
+// 3/1:1,3/2:2,3/3:3,
+// 4/1:1,4/2:2,4/3:3,4/4:4,
+// 5/1:1,5/2:2,5/3:3,5/4:4,5/5:5,
+// 6/1:1,6/2:2,6/3:3,6/4:4,6/5:5,6/6:6,
+// 7/1:1,7/2:2,7/3:3,7/4:4,7/5:5,7/6:6,7/7:7,
+// 8/1:1,8/2:2,8/3:3,8/4:4,8/5:5,8/6:6,8/7:7,8/8:8,
+// 9/1:1,9/2:2,9/3:3,9/4:4,9/5:5,9/6:6,9/7:7,9/8:8,9/9:9,
+// */1:1,*/2:2,*/3:3,*/4:4,*/5:5,*/6:6,*/7:7,*/8:8,*/9:9,
+// */-9:-9,*/-8:-8,*/-7:-7,*/-6:-6,*/-5:-5,*/-4:-4,*/-3:-3,*/-2:-2,*/-1:-1
+
+    int constant = 10;
+    for (int i = 0; i < wordLength; i++) {
+      constant += i;
+    }
+    return constant + letterIndex;
+  }
+
+  int randomIntegerInRange(int min, int max) =>
+      (min + random.nextInt(max - min + 1));
+
+  Future<String> generateText() async {
+    String text = "";
+    int numberOfWords = randomIntegerInRange(1, 6);
+
+    for (int y = 0; y < numberOfWords; y++) {
+      int length = await generateLength();
+
+      for (int x = 0; x < length; x++) {
+        double randomDouble = random.nextDouble();
+
+        double sum = 0.0;
+        for (int i = 0; i < letters.length; i++) {
+          if (randomDouble >= sum &&
+              randomDouble <
+                  sum + letters[i][numberIndex(x, length)]) {
+            text += letters[i][0];
+            break;
+          }
+          sum += letters[i][numberIndex(x, length)];
+        }
+      }
+
+      text += " ";
+    }
+
+    return text;
+  }
+
+  Future<int> generateLength() async {
+    double randomDouble = random.nextDouble();
+
+    double sum = 0.0;
+    for (int i = 0; i < lengths.length; i++) {
+      if (randomDouble >= sum &&
+          randomDouble < sum + lengths[i][1]) {
+        return lengths[i][0];
+      }
+      sum += lengths[i][1];
+    }
+    assert(sum >= 1.0);
+    return lengths[0][0];
   }
 }
 

@@ -42,7 +42,7 @@ body {
     text-align: center;
 
     word-break: normal;
-    max-width: 800px;
+    max-width: 100%; /*800px;*/
 
     cursor: default;
 

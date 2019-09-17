@@ -61,18 +61,23 @@ void constructButtons() async {
 
   var buttonInfo = [
     [
-      'Statistical random words (English)',
-      (Event event) => handleClickRandom(event)
-    ],
-    [
       'English words',
       (Event event) =>
           handleClick(event, 'packs/english-words.json')
     ],
     [
-      'Programming (digits + symbols)',
+      'Statistical random words (English)',
+      (Event event) => handleClickRandom(event)
+    ],
+    [
+      '2-grams',
       (Event event) =>
-          handleClick(event, 'packs/programming.json')
+          handleClick(event, 'packs/ngrams/2-grams.json')
+    ],
+    [
+      '3-grams',
+      (Event event) =>
+          handleClick(event, 'packs/ngrams/3-grams.json')
     ],
     [
       'Digits',
@@ -83,6 +88,11 @@ void constructButtons() async {
       'Symbols',
       (Event event) =>
           handleClick(event, 'packs/programming-symbols.json')
+    ],
+    [
+      'Programming (digits + symbols)',
+      (Event event) =>
+          handleClick(event, 'packs/programming.json')
     ],
     // ['*Polish words*', handleClickDefault], //!!!
     // ['*Random words*', handleClickDefault],
@@ -187,7 +197,7 @@ class TextToType {
   }
 
   Future<String> generateText() async {
-    double randomDouble = random.nextDouble();
+    double randomDouble = random.nextDouble() / 2;
 
     double sum = 0.0;
     for (int i = 0; i < words.length; i++) {
@@ -197,8 +207,8 @@ class TextToType {
       }
       sum += words[i][1];
     }
-    assert(sum >= 1.0);
-    return words[0][0];
+
+    throw Exception("Probability exceeds or equals 1.0");
   }
 }
 

@@ -19,3 +19,5 @@ _/_ | {number of letters in a word}/{position in a word}
 <https://www.wordfrequency.info/>
 <https://www.ngrams.info/>
 <https://www.corpusdata.org/>
+
+<http://zil.ipipan.waw.pl/NKJPNGrams>

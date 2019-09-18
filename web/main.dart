@@ -197,7 +197,7 @@ class TextToType {
   }
 
   Future<String> generateText() async {
-    double randomDouble = random.nextDouble() / 2;
+    double randomDouble = random.nextDouble();
 
     double sum = 0.0;
     for (int i = 0; i < words.length; i++) {

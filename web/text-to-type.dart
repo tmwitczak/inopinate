@@ -479,7 +479,7 @@ void constructTextToTypeElement(String text) {
 }
 
 void handleWindowKeyDownEvent(Event event) async {
-  if (!(event is KeyboardEvent)) {
+  if (event is! KeyboardEvent) {
     return;
   }
 

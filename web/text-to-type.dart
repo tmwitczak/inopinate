@@ -5,8 +5,8 @@ import 'dart:core';
 import 'dart:html';
 import 'dart:math';
 
-///////////////////////////////////////////////////////// Main //
-var random = Random();
+/////////////////////////////////////////////////////////////////
+var randomNumberGenerator = Random();
 
 var maxTyped = 50;
 
@@ -195,7 +195,7 @@ class TextToType {
   }
 
   Future<String> generateText() async {
-    double randomDouble = random.nextDouble();
+    double randomDouble = randomNumberGenerator.nextDouble();
 
     double sum = 0.0;
     for (int i = 0; i < words.length; i++) {
@@ -247,7 +247,7 @@ class RandomWords extends TextToType {
   }
 
   int randomIntegerInRange(int min, int max) =>
-      (min + random.nextInt(max - min + 1));
+      (min + randomNumberGenerator.nextInt(max - min + 1));
 
   Future<String> generateText() async {
     String text = "";
@@ -257,7 +257,7 @@ class RandomWords extends TextToType {
       int length = await generateLength();
 
       for (int x = 0; x < length; x++) {
-        double randomDouble = random.nextDouble();
+        double randomDouble = randomNumberGenerator.nextDouble();
 
         double sum = 0.0;
         for (int i = 0; i < letters.length; i++) {
@@ -278,7 +278,7 @@ class RandomWords extends TextToType {
   }
 
   Future<int> generateLength() async {
-    double randomDouble = random.nextDouble();
+    double randomDouble = randomNumberGenerator.nextDouble();
 
     double sum = 0.0;
     for (int i = 0; i < lengths.length; i++) {

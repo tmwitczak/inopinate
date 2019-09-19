@@ -23,19 +23,19 @@ void parseUrlParameters() {
   }
 
   var setupFunctions = {
-    'dest': () {
+    'dest': (parameterName) {
       querySelector('body').children.add(DivElement()
-        ..appendText(parameters['dest'])
+        ..appendText(parameters[parameterName])
         ..className = 'destination');
     },
-    'characters': () {
-      maxTyped = int.parse(parameters['characters']);
+    'characters': (parameterName) {
+      maxTyped = int.parse(parameters[parameterName]);
     }
   };
 
-  setupFunctions.forEach((parameter, setup) {
-    if (parameters.containsKey(parameter)) {
-      setup();
+  setupFunctions.forEach((parameterName, setup) {
+    if (parameters.containsKey(parameterName)) {
+      setup(parameterName);
     }
   });
 }

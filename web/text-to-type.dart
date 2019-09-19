@@ -494,7 +494,7 @@ void handleWindowKeyDownEvent(Event event) async {
     return;
   }
 
-  //--------------------------------------------------------------------------
+  //-------------------------------------------------------------
   bool isStringOneCharacter(String string) =>
       (string.length == 1);
 
@@ -505,7 +505,7 @@ void handleWindowKeyDownEvent(Event event) async {
       (keyboardEvent.key.codeUnitAt(0) <=
           rangeMax.codeUnitAt(0));
 
-  //--------------------------------------------------------------------------
+  //-------------------------------------------------------------
   KeyboardEvent keyboardEvent = event;
 
   if (keyboardEvent.key == 'Backspace') {

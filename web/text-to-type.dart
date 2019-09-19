@@ -15,18 +15,29 @@ void setupEventListeners() {
   window.onMouseMove.listen(doTheCoolButtonEffect);
 }
 
-void parseURI() {
-  if (Uri.base.queryParameters.isNotEmpty) {
-    if (Uri.base.queryParameters.containsKey('dest')) {
-      querySelector('body').children.add(DivElement()
-        ..appendText(Uri.base.queryParameters['dest'])
-        ..className = 'destination');
-    }
-    if (Uri.base.queryParameters.containsKey('characters')) {
-      maxTyped =
-          int.parse(Uri.base.queryParameters['characters']);
-    }
+void parseUrlParameters() {
+  var parameters = Uri.base.queryParameters;
+
+  if (parameters.isEmpty) {
+    return;
   }
+
+  var setupFunctions = {
+    'dest': () {
+      querySelector('body').children.add(DivElement()
+        ..appendText(parameters['dest'])
+        ..className = 'destination');
+    },
+    'characters': () {
+      maxTyped = int.parse(parameters['characters']);
+    }
+  };
+
+  setupFunctions.forEach((parameter, setup) {
+    if (parameters.containsKey(parameter)) {
+      setup();
+    }
+  });
 }
 
 void handleButtonsFadeout() async {}

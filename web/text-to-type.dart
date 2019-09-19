@@ -15,6 +15,7 @@ void setupEventListeners() {
   window.onMouseMove.listen(doTheCoolButtonEffect);
 }
 
+/////////////////////////////////////// Parsing URL parameters //
 void parseUrlParameters() {
   var parameters = Uri.base.queryParameters;
 
@@ -489,23 +490,21 @@ void constructTextToTypeElement(String text) {
   textToType = text;
 }
 
+// /////////////////////////////////////////// Event: key down //
 void handleWindowKeyDownEvent(Event event) async {
-  if (event is! KeyboardEvent) {
-    return;
-  }
-
-  //-------------------------------------------------------------
-  bool isStringOneCharacter(String string) =>
-      (string.length == 1);
-
+  // -------------------------------------- Local functions -- //
   bool isPressedKeyAcceptable(KeyboardEvent keyboardEvent) =>
-      isStringOneCharacter(keyboardEvent.key) &&
+      (keyboardEvent.key.length == 1) &&
       (keyboardEvent.key.codeUnitAt(0) >=
           rangeMin.codeUnitAt(0)) &&
       (keyboardEvent.key.codeUnitAt(0) <=
           rangeMax.codeUnitAt(0));
 
   //-------------------------------------------------------------
+  if (event is! KeyboardEvent) {
+    return;
+  }
+
   KeyboardEvent keyboardEvent = event;
 
   if (keyboardEvent.key == 'Backspace') {

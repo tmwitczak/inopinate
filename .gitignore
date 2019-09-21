@@ -16,3 +16,7 @@ doc/api/
 
 # VIM
 .swp
+
+# Project
+temp/
+web2/

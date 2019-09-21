@@ -23,18 +23,19 @@ void parseUrlParameters() {
     return;
   }
 
-  var setupFunctions = {
-    'dest': (parameterName) {
+  Map<String, Function(String)> setupFunctions = {
+    'dest': (String parameterName) {
       querySelector('body').children.add(DivElement()
         ..appendText(parameters[parameterName])
         ..className = 'destination');
     },
-    'characters': (parameterName) {
+    'characters': (String parameterName) {
       maxTyped = int.parse(parameters[parameterName]);
     }
   };
 
-  setupFunctions.forEach((parameterName, setup) {
+  setupFunctions
+      .forEach((String parameterName, Function(String) setup) {
     if (parameters.containsKey(parameterName)) {
       setup(parameterName);
     }

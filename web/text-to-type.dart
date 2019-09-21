@@ -622,7 +622,8 @@ void handleWindowKeyDownEvent(Event event) async {
         ..style.transition = 'opacity 1.5s ease-out 0s';
 
       Timer(Duration(seconds: 2), () {
-        if (Uri.base.queryParameters.containsKey('redirect-to')) {
+        if (Uri.base.queryParameters
+            .containsKey('redirect-to')) {
           window.location.href = 'http://' +
               Uri.base.queryParameters['redirect-to'] +
               '.com';

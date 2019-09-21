@@ -24,7 +24,7 @@ void parseUrlParameters() {
   }
 
   Map<String, Function(String)> setupFunctions = {
-    'dest': (String parameterName) {
+    'redirect-to': (String parameterName) {
       querySelector('body').children.add(DivElement()
         ..appendText(parameters[parameterName])
         ..className = 'destination');
@@ -73,8 +73,8 @@ void constructButtons() async {
   var buttonInfo = [
     [
       'Polish words',
-      (Event event) => handleClick(
-          event, 'packs/polish/1grams.json')
+      (Event event) =>
+          handleClick(event, 'packs/polish/1grams.json')
     ],
     [
       'English words',
@@ -608,7 +608,7 @@ void handleWindowKeyDownEvent(Event event) async {
   }
 
   if (typedLetters == maxTyped) {
-    if (Uri.base.queryParameters.containsKey('dest')) {
+    if (Uri.base.queryParameters.containsKey('redirect-to')) {
       querySelector('.destination')
         ..style.color = 'var(--color-5)'
         ..style.transition = 'color 1.5s ease-in 0s';
@@ -622,9 +622,9 @@ void handleWindowKeyDownEvent(Event event) async {
         ..style.transition = 'opacity 1.5s ease-out 0s';
 
       Timer(Duration(seconds: 2), () {
-        if (Uri.base.queryParameters.containsKey('dest')) {
+        if (Uri.base.queryParameters.containsKey('redirect-to')) {
           window.location.href = 'http://' +
-              Uri.base.queryParameters['dest'] +
+              Uri.base.queryParameters['redirect-to'] +
               '.com';
         }
       });

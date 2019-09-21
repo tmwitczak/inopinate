@@ -71,6 +71,11 @@ void constructButtons() async {
 
   var buttonInfo = [
     [
+      'Polish words',
+      (Event event) => handleClick(
+          event, 'packs/polish/1grams.json')
+    ],
+    [
       'English words',
       (Event event) =>
           handleClick(event, 'packs/english-words.json')
@@ -495,10 +500,30 @@ void handleWindowKeyDownEvent(Event event) async {
   // -------------------------------------- Local functions -- //
   bool isPressedKeyAcceptable(KeyboardEvent keyboardEvent) =>
       (keyboardEvent.key.length == 1) &&
-      (keyboardEvent.key.codeUnitAt(0) >=
-          rangeMin.codeUnitAt(0)) &&
-      (keyboardEvent.key.codeUnitAt(0) <=
-          rangeMax.codeUnitAt(0));
+          (keyboardEvent.key.codeUnitAt(0) >=
+              rangeMin.codeUnitAt(0)) &&
+          (keyboardEvent.key.codeUnitAt(0) <=
+              rangeMax.codeUnitAt(0)) ||
+      ([
+        'ą',
+        'Ą',
+        'ć',
+        'Ć',
+        'ę',
+        'Ę',
+        'ł',
+        'Ł',
+        'ń',
+        'Ń',
+        'ó',
+        'Ó',
+        'ś',
+        'Ś',
+        'ź',
+        'Ź',
+        'ż',
+        'Ż'
+      ].contains(keyboardEvent.key));
 
   //-------------------------------------------------------------
   if (event is! KeyboardEvent) {

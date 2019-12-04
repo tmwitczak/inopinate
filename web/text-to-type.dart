@@ -9,6 +9,8 @@ import 'dart:math';
 var randomNumberGenerator = Random();
 
 var maxTyped = 750;
+var showRedirection = false;
+var completed = false;
 
 void setupEventListeners() {
   window.onKeyDown.listen(handleWindowKeyDownEvent);
@@ -40,19 +42,17 @@ void handleClick(Event event, String jsonFilename) async {
 }
 
 void constructButtons() async {
-  var typingModeButtonsContainer =
-      querySelector('#typing-mode-buttons')..children.clear();
+  var typingModeButtonsContainer = querySelector('#typing-mode-buttons')
+    ..children.clear();
 
   var buttonInfo = [
     [
       'Polish words',
-      (Event event) =>
-          handleClick(event, 'packs/polish/1grams.json')
+      (Event event) => handleClick(event, 'packs/polish/1grams.json')
     ],
     [
       'English words',
-      (Event event) =>
-          handleClick(event, 'packs/english-words.json')
+      (Event event) => handleClick(event, 'packs/english-words.json')
     ],
     [
       'Statistical random words (English)',
@@ -60,28 +60,23 @@ void constructButtons() async {
     ],
     [
       '2-grams',
-      (Event event) =>
-          handleClick(event, 'packs/ngrams/2-grams.json')
+      (Event event) => handleClick(event, 'packs/ngrams/2-grams.json')
     ],
     [
       '3-grams',
-      (Event event) =>
-          handleClick(event, 'packs/ngrams/3-grams.json')
+      (Event event) => handleClick(event, 'packs/ngrams/3-grams.json')
     ],
     [
       'Digits',
-      (Event event) =>
-          handleClick(event, 'packs/programming-digits.json')
+      (Event event) => handleClick(event, 'packs/programming-digits.json')
     ],
     [
       'Symbols',
-      (Event event) =>
-          handleClick(event, 'packs/programming-symbols.json')
+      (Event event) => handleClick(event, 'packs/programming-symbols.json')
     ],
     [
       'Programming (digits + symbols)',
-      (Event event) =>
-          handleClick(event, 'packs/programming.json')
+      (Event event) => handleClick(event, 'packs/programming.json')
     ],
     // ['*Polish words*', handleClickDefault], //!!!
     // ['*Random words*', handleClickDefault],
@@ -142,16 +137,15 @@ void doTheCoolButtonEffect(MouseEvent event) {
   for (int i = 0; i < buttons.length; i++) {
     double opacity = 0.0;
 
-    var buttonCenterX = buttons[i].borderEdge.left +
-        buttons[i].borderEdge.width / 2;
-    var buttonCenterY = buttons[i].borderEdge.top +
-        buttons[i].borderEdge.height / 2;
-    var distance = sqrt(pow(buttonCenterX - mouseX, 2) +
-        pow(buttonCenterY - mouseY, 2));
+    var buttonCenterX =
+        buttons[i].borderEdge.left + buttons[i].borderEdge.width / 2;
+    var buttonCenterY =
+        buttons[i].borderEdge.top + buttons[i].borderEdge.height / 2;
+    var distance = sqrt(
+        pow(buttonCenterX - mouseX, 2) + pow(buttonCenterY - mouseY, 2));
 
     //TODO: make this function not linear
-    var maxDist =
-        min(window.outerWidth, window.innerHeight) * 0.8;
+    var maxDist = min(window.outerWidth, window.innerHeight) * 0.8;
     if (distance > maxDist) {
       opacity = 0.0;
     } else if (distance <= maxDist && distance > 50) {
@@ -166,8 +160,7 @@ void doTheCoolButtonEffect(MouseEvent event) {
         mouseY <= buttons[i].borderEdge.bottom) {
       buttons[i].style.opacity = (1).toString();
     } else {
-      buttons[i].style.opacity =
-          (0.75 * opacity + 0.0).toString();
+      buttons[i].style.opacity = (0.75 * opacity + 0.0).toString();
     }
   }
 }
@@ -180,8 +173,7 @@ class TextToType {
   }
 
   Future<List<List<dynamic>>> loadData(String filename) async {
-    return (json.decode(await HttpRequest.getString(filename))
-            as List)
+    return (json.decode(await HttpRequest.getString(filename)) as List)
         .cast<List<dynamic>>();
   }
 
@@ -190,8 +182,7 @@ class TextToType {
 
     double sum = 0.0;
     for (int i = 0; i < words.length; i++) {
-      if (randomDouble >= sum &&
-          randomDouble < sum + words[i][1]) {
+      if (randomDouble >= sum && randomDouble < sum + words[i][1]) {
         return words[i][0];
       }
       sum += words[i][1];
@@ -210,8 +201,7 @@ class RandomWords extends TextToType {
   }
 
   Future<List<List<dynamic>>> loadData(String filename) async {
-    return (json.decode(await HttpRequest.getString(filename))
-            as List)
+    return (json.decode(await HttpRequest.getString(filename)) as List)
         .cast<List<dynamic>>();
   }
 
@@ -253,8 +243,7 @@ class RandomWords extends TextToType {
         double sum = 0.0;
         for (int i = 0; i < letters.length; i++) {
           if (randomDouble >= sum &&
-              randomDouble <
-                  sum + letters[i][numberIndex(x, length)]) {
+              randomDouble < sum + letters[i][numberIndex(x, length)]) {
             text += letters[i][0];
             break;
           }
@@ -273,8 +262,7 @@ class RandomWords extends TextToType {
 
     double sum = 0.0;
     for (int i = 0; i < lengths.length; i++) {
-      if (randomDouble >= sum &&
-          randomDouble < sum + lengths[i][1]) {
+      if (randomDouble >= sum && randomDouble < sum + lengths[i][1]) {
         return lengths[i][0];
       }
       sum += lengths[i][1];
@@ -469,15 +457,18 @@ void constructTextToTypeElement(String text) {
   textToType = text;
 }
 
+void setRedirectionVisibility() {
+  querySelector('.destination')?.style?.visibility =
+      showRedirection ? "visible" : "hidden";
+}
+
 // /////////////////////////////////////////// Event: key down //
 void handleWindowKeyDownEvent(Event event) async {
   // -------------------------------------- Local functions -- //
   bool isPressedKeyAcceptable(KeyboardEvent keyboardEvent) =>
       (keyboardEvent.key.length == 1) &&
-          (keyboardEvent.key.codeUnitAt(0) >=
-              rangeMin.codeUnitAt(0)) &&
-          (keyboardEvent.key.codeUnitAt(0) <=
-              rangeMax.codeUnitAt(0)) ||
+          (keyboardEvent.key.codeUnitAt(0) >= rangeMin.codeUnitAt(0)) &&
+          (keyboardEvent.key.codeUnitAt(0) <= rangeMax.codeUnitAt(0)) ||
       ([
         'ą',
         'Ą',
@@ -507,30 +498,34 @@ void handleWindowKeyDownEvent(Event event) async {
   KeyboardEvent keyboardEvent = event;
 
   if (keyboardEvent.key == 'Backspace') {
-    querySelector('#text-to-type')
-        .children
-        .elementAt(textTyped.length - 1)
-        .className = "not-typed";
+    // querySelector('#text-to-type')
+    //     .children
+    //     .elementAt(textTyped.length - 1)
+    //     .className = "not-typed";
 
-    textTyped = textTyped.substring(0, textTyped.length - 1);
+    if (textTyped.isNotEmpty) {
+      textTyped = textTyped.substring(0, textTyped.length - 1);
+    }
   }
 
   if (isPressedKeyAcceptable(keyboardEvent) ||
       keyboardEvent.key == "Space") {
     // Is pressed key correct?
-    if (textToType[textTyped.length] == keyboardEvent.key) {
-      querySelector('#text-to-type')
-          .children
-          .elementAt(textTyped.length)
-          .className = "typed";
-      textTyped += keyboardEvent.key;
-      typedLetters++;
-    } else {
-      querySelector('#text-to-type')
-          .children
-          .elementAt(textTyped.length)
-          .className = "incorrect";
-      textTyped += keyboardEvent.key;
+    if (textTyped.length < textToType.length) {
+      if (textToType[textTyped.length] == keyboardEvent.key) {
+        // querySelector('#text-to-type')
+        //     .children
+        //     .elementAt(textTyped.length)
+        //     .className = "typed";
+        textTyped += keyboardEvent.key;
+        typedLetters++;
+      } else {
+        // querySelector('#text-to-type')
+        //     .children
+        //     .elementAt(textTyped.length)
+        //     .className = "incorrect";
+        textTyped += keyboardEvent.key;
+      }
     }
     // If it isn't
     // else {
@@ -542,10 +537,37 @@ void handleWindowKeyDownEvent(Event event) async {
     // }
   }
 
+  //--------------------------------------------- redraw word
+  querySelector('#text-to-type').children.clear();
+  int currentLetter = 0;
+  for (; currentLetter < textTyped.length;) {
+    bool correct =
+        textTyped[currentLetter].compareTo(textToType[currentLetter]) == 0;
+
+    int index;
+    for (index = currentLetter + 1;
+        index < min(textToType.length, textTyped.length) &&
+            (correct ==
+                (textTyped[index].compareTo(textToType[index]) ==
+                    0));
+        ++index) {}
+
+    querySelector('#text-to-type').children.add(SpanElement()
+      ..text = textToType.substring(currentLetter, index)
+      ..className = correct ? 'typed' : 'incorrect');
+
+    currentLetter = index;
+  }
+  for (; currentLetter < textToType.length; ++currentLetter) {
+    querySelector('#text-to-type').children.add(SpanElement()
+      ..text = textToType[currentLetter]
+      ..className = 'not-typed');
+  }
+  //---------------------------------------------
+
   // Is text already typed
   if (textToType == textTyped) {
-    constructTextToTypeElement(
-        await textToTypeObj.generateText());
+    constructTextToTypeElement(await textToTypeObj.generateText());
     textTyped = '';
   }
 
@@ -573,35 +595,40 @@ void handleWindowKeyDownEvent(Event event) async {
   // Progress bar
   if (typedLetters <= maxTyped) {
     querySelector("#typed-characters-progress-bar")
-            .children
-            .elementAt(0)
-            .style
-            .width =
-        (typedLetters / maxTyped * 100.0).toString() + "%";
+        .children
+        .elementAt(0)
+        .style
+        .width = (typedLetters / maxTyped * 100.0).toString() + "%";
   }
 
-  if (typedLetters == maxTyped) {
+  if (typedLetters == maxTyped && !completed) {
+    completed = true;
+
+    querySelector('#text-to-type')
+      ..style.opacity = '0.0'
+      ..style.transition = 'opacity 3s ease-out';
+
     if (Uri.base.queryParameters.containsKey('redirect-to')) {
       querySelector('.destination')
         ..style.color = 'var(--color-5)'
         ..style.transition = 'color 1.5s ease-in 0s';
-
-      querySelector('#text-to-type')
-        ..style.opacity = '0.2'
-        ..style.transition = 'opacity 1.5s ease-out 0s';
 
       querySelector('#typing-mode-buttons')
         ..style.opacity = '0.2'
         ..style.transition = 'opacity 1.5s ease-out 0s';
 
       Timer(Duration(seconds: 2), () {
-        if (Uri.base.queryParameters
-            .containsKey('redirect-to')) {
-          window.location.href = 'http://' +
-              Uri.base.queryParameters['redirect-to'] +
-              '.com';
+        if (Uri.base.queryParameters.containsKey('redirect-to')) {
+          window.location.href =
+              'http://' + Uri.base.queryParameters['redirect-to'] + '.com';
         }
       });
+    } else {
+      querySelector('body').children.add(DivElement()
+        ..className = 'lenny'
+        // ..nodes.add(DocumentFragment.html("( &#65439;&#12526;&#65439;)")));
+        ..nodes.add(DocumentFragment.html(
+            "(&#12494;&#3232;&#30410;&#3232;)&#12494;&#24417;&#9531;&#9473;&#9531;")));
     }
   }
 }

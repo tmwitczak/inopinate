@@ -11,6 +11,8 @@ void main() async {
 
   await constructButtons();
   setupEventListeners();
+
+  setRedirectionVisibility();
 }
 
 // /////////////////////////////////////////////////////////// //

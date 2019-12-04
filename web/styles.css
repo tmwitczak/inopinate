@@ -1,5 +1,7 @@
 /* ///////////////////////////////////////////////////////////// Imports */
 @import url("https://fonts.googleapis.com/css?family=Livvic&display=swap");
+/* @import url("https://fonts.googleapis.com/css?family=PT+Sans&display=swap"); */
+/* @import url("https://fonts.googleapis.com/css?family=Spectral&display=swap"); */
 
 /* /////////////////////////////////////////////////////////// Variables */
 :root {
@@ -22,6 +24,8 @@ body {
     padding: 0;
     background-color: var(--color-2);
 
+    /* font-family: "Spectral", serif; */
+    /* font-family: "PT Sans", sans-serif; */
     font-family: "Livvic", sans-serif;
     font-size: var(--text-height-typing);
 
@@ -166,7 +170,8 @@ body {
     opacity: 1;
 } */
 
-.destination {
+.destination,
+.lenny {
     margin: auto;
     position: absolute;
     top: -50%;
@@ -181,4 +186,24 @@ body {
     text-shadow: 2.5px -5px 5px var(--color-3);
     letter-spacing: calc(var(--text-height-typing) / 10);
     z-index: 0;
+}
+
+.lenny {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    animation: lenny 3s ease-in forwards;
+    letter-spacing: 0;
+}
+@keyframes lenny {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

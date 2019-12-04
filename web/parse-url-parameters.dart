@@ -16,10 +16,14 @@ void parseUrlParameters() {
     'redirect-to': (String parameterName) {
       querySelector('body').children.add(DivElement()
         ..appendText(parameters[parameterName])
-        ..className = 'destination');
+        ..className = 'destination'
+        ..style.visibility = "hidden");
     },
     'characters': (String parameterName) {
       maxTyped = int.parse(parameters[parameterName]);
+    },
+    'show-redirection': (String parameterName) {
+      showRedirection = true;
     }
   };
 

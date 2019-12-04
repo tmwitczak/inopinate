@@ -8,7 +8,7 @@ import 'dart:math';
 /////////////////////////////////////////////////////////////////
 var randomNumberGenerator = Random();
 
-var maxTyped = 1500;
+var maxTyped = 750;
 
 void setupEventListeners() {
   window.onKeyDown.listen(handleWindowKeyDownEvent);
